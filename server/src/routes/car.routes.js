@@ -45,7 +45,7 @@ router.route("/update/:carId").put(
 );
 
 // Search cars globally by keyword
-router.route("/search").get(searchCars);
+router.route("/search").post(searchCars);
 
 // Get or delete a car by ID
 router
