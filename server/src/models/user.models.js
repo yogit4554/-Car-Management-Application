@@ -3,11 +3,6 @@ import jwt from "jsonwebtoken" // key
 import bcrypt from "bcryptjs" /// pasword hashing     encryptuiona and decription  
 
 const userSchema=new Schema({
-    username:{
-        type:String,
-        required:true,
-        unique:true
-    },
     email:{
         type:String,
         required:true,
