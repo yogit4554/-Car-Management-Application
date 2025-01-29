@@ -29,10 +29,10 @@ const UserCarsPage = () => {
   }, []);
 
   return (
-    <div>
+    <div className="min-h-screen bg-gradient-to-r from-gray-500 to-gray-600 text-white">
       <Header isLoggedIn={true} />
-      <div className="p-4">
-        <h2 className="text-2xl font-bold mb-4">My Products</h2>
+      <div className="p-6 flex flex-col items-center">
+        <h2 className="text-4xl font-extrabold drop-shadow-lg mb-6">My Products</h2>
         <UserCars cars={cars} fetchUserCars={fetchUserCars} />
       </div>
     </div>

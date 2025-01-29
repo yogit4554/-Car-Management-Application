@@ -23,13 +23,13 @@ const ProductDetailPage = () => {
   }, [id]);
 
   return (
-    <div>
+    <div className="min-h-screen bg-gradient-to-r from-gray-500 to-gray-600 text-white">
       <Header isLoggedIn={true} />
-      <div className="p-4">
+      <div className="container mx-auto py-10 px-6">
         {car ? (
           <ProductDetail car={car} />
         ) : (
-          <p>Loading car details...</p>
+          <p className="text-center text-xl font-medium">Loading car details...</p>
         )}
       </div>
     </div>

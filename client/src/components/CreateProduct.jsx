@@ -34,69 +34,83 @@ const CreateProduct = () => {
   };
 
   return (
-    <form onSubmit={handleCreate} className="bg-white p-6 rounded shadow-md">
-      <h2 className="text-2xl mb-4">Create Product</h2>
+    <form onSubmit={handleCreate} className="bg-white p-8 rounded-xl shadow-lg max-w-lg w-full">
+      <h2 className="text-3xl font-bold text-gray-900 mb-6">Create Product</h2>
+
+      {/* Title */}
       <div className="mb-4">
-        <label className="block mb-1">Title</label>
+        <label className="block font-semibold text-gray-800 mb-2 ">Title</label>
         <input
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          className="w-full border rounded px-2 py-1"
+          className="w-full border border-gray-300 text-gray-800 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          required
         />
       </div>
+
+      {/* Description */}
       <div className="mb-4">
-        <label className="block mb-1">Description</label>
+        <label className="block font-semibold text-gray-800 mb-2">Description</label>
         <textarea
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          className="w-full border rounded px-2 py-1"
+          className="w-full border border-gray-300 text-gray-800 rounded px-3 py-2 h-24 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          required
         />
       </div>
+
+      {/* Tags */}
       <div className="mb-4">
-        <label className="block mb-1">Tags</label>
+        <label className="block font-semibold text-gray-800 mb-2">Tags</label>
         <input
           type="text"
           value={tags}
           onChange={(e) => setTags(e.target.value)}
-          className="w-full border rounded px-2 py-1"
+          className="w-full border border-gray-300 text-gray-800 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          placeholder="Comma-separated tags with inverted comma"
         />
       </div>
+
+      {/* Image Upload */}
       <div className="mb-4">
-        <label className="block mb-1">Images</label>
+        <label className="block font-semibold text-gray-800 mb-2">Upload Images</label>
         <input
           type="file"
           multiple
           onChange={handleImageChange}
-          className="w-full border rounded"
+          className="w-full border border-gray-300 text-gray-800 rounded px-3 py-2 cursor-pointer"
         />
       </div>
 
-      {/* Display selected images */}
-      <div className="mb-4 flex flex-wrap gap-2">
-        {images.map((image, index) => (
-          <div key={index} className="relative">
-            <img
-              src={URL.createObjectURL(image)}
-              alt="Selected"
-              className="w-24 h-24 object-cover rounded border"
-            />
-            <button
-              type="button"
-              onClick={() => removeImage(index)}
-              className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1 text-xs"
-            >
-              ✕
-            </button>
-          </div>
-        ))}
-      </div>
+      {/* Image Preview */}
+      {images.length > 0 && (
+        <div className="mb-4 grid grid-cols-3 gap-2">
+          {images.map((image, index) => (
+            <div key={index} className="relative">
+              <img
+                src={URL.createObjectURL(image)}
+                alt="Selected"
+                className="w-28 h-28 object-cover rounded-md border border-gray-300"
+              />
+              <button
+                type="button"
+                onClick={() => removeImage(index)}
+                className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 text-xs"
+              >
+                ✕
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
 
+      {/* Submit Button */}
       <button
         type="submit"
-        className="bg-blue-500 text-white px-4 py-2 rounded w-full"
+        className="bg-blue-500 text-white px-6 py-3 rounded-lg w-full hover:bg-blue-600 transition"
       >
-        Create
+        Create Product
       </button>
     </form>
   );

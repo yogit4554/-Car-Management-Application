@@ -24,19 +24,19 @@ const UserCars = ({ cars, fetchUserCars }) => {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {cars.length === 0 ? (
         <p>No cars found</p> // Display message if no cars are available
       ) : (
         cars.map((car) => (
-          <div key={car._id} className="bg-white p-4 rounded shadow-md">
+          <div key={car._id} className="bg-white p-6 rounded-lg shadow-lg hover:shadow-2xl transition-shadow duration-300">
             {/* Display Car Image */}
             <div className="mb-4">
               {car.images && car.images.length > 0 ? (
                 <img
                   src={car.images[0]} // Display first image
                   alt={car.title}
-                  className="w-full h-48 object-cover rounded"
+                  className="w-full h-48 object-cover rounded-lg"
                 />
               ) : (
                 <p className="text-gray-500">No image available</p>
@@ -44,24 +44,24 @@ const UserCars = ({ cars, fetchUserCars }) => {
             </div>
 
             {/* Display Car Title */}
-            <h3 className="text-lg font-bold">{car.title}</h3>
+            <h3 className="text-xl font-bold text-gray-900 mb-2">{car.title}</h3>
 
             {/* Display Car Tags */}
-            <p className="text-sm text-gray-600 mb-2">
-              Tags: {car.tags ? car.tags : "No tags"}
+            <p className="text-sm text-gray-600 mb-4">
+              Tags: {car.tags.length ? car.tags.join(", ") : "No tags"}
             </p>
 
             {/* Update & Delete Buttons */}
-            <div className="flex space-x-2 mt-2">
+            <div className="flex space-x-4 mt-4">
               <button
                 onClick={() => handleUpdate(car._id)}
-                className="bg-yellow-500 text-white px-4 py-2 rounded"
+                className="bg-yellow-500 text-white px-6 py-2 rounded-lg hover:bg-yellow-600 transition-colors duration-200"
               >
                 Update
               </button>
               <button
                 onClick={() => handleDelete(car._id)}
-                className="bg-red-500 text-white px-4 py-2 rounded"
+                className="bg-red-500 text-white px-6 py-2 rounded-lg hover:bg-red-600 transition-colors duration-200"
               >
                 Delete
               </button>

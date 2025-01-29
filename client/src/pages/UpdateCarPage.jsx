@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import api from "../utils/api.js";
+import Header from "../components/Header";
 
 const UpdateCar = () => {
   const { id } = useParams(); // Get the car ID from the URL
@@ -67,47 +68,59 @@ const UpdateCar = () => {
   };
 
   return (
-    <div>
-      <h2 className="text-2xl font-bold mb-4">Update Car</h2>
-      <form onSubmit={handleUpdate} className="bg-white p-6 rounded shadow-md">
+    <div className="min-h-screen bg-gradient-to-r from-gray-500 to-gray-600 text-white">
+      <Header isLoggedIn={true} />
+      <form onSubmit={handleUpdate} className="bg-white p-8 rounded-xl shadow-lg max-w-lg w-full mx-auto mt-10">
+        <h2 className="text-3xl font-extrabold text-gray-900 mb-6">Update Car</h2>
+
+        {/* Title */}
         <div className="mb-4">
-          <label className="block mb-1">Title</label>
+          <label className="block font-semibold text-gray-800 mb-2">Title</label>
           <input
             type="text"
             value={car.title}
             onChange={(e) => setCar({ ...car, title: e.target.value })}
-            className="w-full border rounded px-2 py-1"
+            className="w-full border border-gray-300 text-gray-800 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
+
+        {/* Description */}
         <div className="mb-4">
-          <label className="block mb-1">Description</label>
+          <label className="block font-semibold text-gray-800 mb-2">Description</label>
           <textarea
             value={car.description}
             onChange={(e) => setCar({ ...car, description: e.target.value })}
-            className="w-full border rounded px-2 py-1"
+            className="w-full border border-gray-300 text-gray-800 rounded px-3 py-2 h-24 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
+
+        {/* Tags */}
         <div className="mb-4">
-          <label className="block mb-1">Tags</label>
+          <label className="block font-semibold text-gray-800 mb-2">Tags</label>
           <input
             type="text"
             value={car.tags}
             onChange={(e) => setCar({ ...car, tags: e.target.value })}
-            className="w-full border rounded px-2 py-1"
+            className="w-full border border-gray-300 text-gray-800 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="Comma-separated tags"
           />
         </div>
 
         {/* Existing Images */}
         <div className="mb-4">
-          <label className="block mb-1">Existing Images</label>
+          <label className="block font-semibold text-gray-800 mb-2">Existing Images</label>
           <div className="flex flex-wrap gap-2">
             {existingImages.map((imageUrl, index) => (
               <div key={index} className="relative">
-                <img src={imageUrl} alt="Existing" className="w-24 h-24 object-cover rounded border" />
+                <img
+                  src={imageUrl}
+                  alt="Existing"
+                  className="w-24 h-24 object-cover rounded-md border border-gray-300"
+                />
                 <button
                   type="button"
                   onClick={() => removeExistingImage(imageUrl)}
-                  className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1 text-xs"
+                  className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 text-xs"
                 >
                   ✕
                 </button>
@@ -118,12 +131,12 @@ const UpdateCar = () => {
 
         {/* New Image Upload */}
         <div className="mb-4">
-          <label className="block mb-1">Upload New Images</label>
+          <label className="block font-semibold text-gray-800 mb-2">Upload New Images</label>
           <input
             type="file"
             multiple
             onChange={handleImageChange}
-            className="w-full border rounded px-2 py-1"
+            className="w-full border border-gray-300 text-gray-800 rounded px-3 py-2 cursor-pointer"
           />
         </div>
 
@@ -134,12 +147,12 @@ const UpdateCar = () => {
               <img
                 src={URL.createObjectURL(image)}
                 alt="New"
-                className="w-24 h-24 object-cover rounded border"
+                className="w-24 h-24 object-cover rounded-md border border-gray-300"
               />
               <button
                 type="button"
                 onClick={() => removeNewImage(index)}
-                className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1 text-xs"
+                className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-1 text-xs"
               >
                 ✕
               </button>
@@ -147,8 +160,12 @@ const UpdateCar = () => {
           ))}
         </div>
 
-        <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded w-full">
-          Update
+        {/* Submit Button */}
+        <button
+          type="submit"
+          className="bg-blue-500 text-white px-6 py-3 rounded-lg w-full hover:bg-blue-600 transition"
+        >
+          Update Car
         </button>
       </form>
     </div>
