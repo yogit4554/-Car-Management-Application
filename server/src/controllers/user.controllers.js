@@ -86,7 +86,8 @@ const loginUser=asyncHandler(async(req,res)=>{
     const loggedInUser = await User.findById(user._id).select("-password -refreshToken")
     const options = {
         httpOnly: true,   ///by this cokkies will not be modified by frontent 
-        secure: true
+        secure: false,
+        sameSite: "lax"
     }
     return res
     .status(200)
