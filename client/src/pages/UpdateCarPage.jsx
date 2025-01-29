@@ -10,15 +10,16 @@ const UpdateCar = () => {
     description: "",
     tags: "",
   });
-  const [images, setImages] = useState([]); // State to hold images
-  const [imageFiles, setImageFiles] = useState([]); // To store the files selected by user
+  const [existingImages, setExistingImages] = useState([]); // Store existing images
+  const [newImages, setNewImages] = useState([]); // Store new images selected by user
 
   useEffect(() => {
     const fetchCarDetails = async () => {
       try {
         const response = await api.get(`/cars/${id}`);
         if (response.data.success) {
-          setCar(response.data.data); // Set the fetched car details to state
+          setCar(response.data.data);
+          setExistingImages(response.data.data.images || []); // Fetch existing images
         }
       } catch (error) {
         console.error("Failed to fetch car details", error);
@@ -29,7 +30,15 @@ const UpdateCar = () => {
   }, [id]);
 
   const handleImageChange = (e) => {
-    setImageFiles(e.target.files); // Set selected files to state
+    setNewImages((prev) => [...prev, ...Array.from(e.target.files)]); // Append new images
+  };
+
+  const removeNewImage = (index) => {
+    setNewImages(newImages.filter((_, i) => i !== index)); // Remove selected new image
+  };
+
+  const removeExistingImage = (imageUrl) => {
+    setExistingImages(existingImages.filter((img) => img !== imageUrl)); // Remove existing image
   };
 
   const handleUpdate = async (e) => {
@@ -40,21 +49,16 @@ const UpdateCar = () => {
     formData.append("description", car.description);
     formData.append("tags", car.tags);
 
-    // Append images to FormData
-    for (let i = 0; i < imageFiles.length; i++) {
-      formData.append("carImage", imageFiles[i]);
-    }
+    newImages.forEach((image) => formData.append("carImage", image)); // Append new images
 
     try {
       const response = await api.put(`/cars/update/${id}`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data", // Set the content type for file upload
-        },
+        headers: { "Content-Type": "multipart/form-data" },
       });
 
       if (response.data.success) {
         alert("Car updated successfully!");
-        navigate("/get-user-car"); // Redirect to /get-user-car after successful update
+        navigate("/get-user-car"); // Redirect to user cars
       }
     } catch (error) {
       console.error("Failed to update car", error);
@@ -92,15 +96,57 @@ const UpdateCar = () => {
             className="w-full border rounded px-2 py-1"
           />
         </div>
+
+        {/* Existing Images */}
         <div className="mb-4">
-          <label className="block mb-1">Images</label>
+          <label className="block mb-1">Existing Images</label>
+          <div className="flex flex-wrap gap-2">
+            {existingImages.map((imageUrl, index) => (
+              <div key={index} className="relative">
+                <img src={imageUrl} alt="Existing" className="w-24 h-24 object-cover rounded border" />
+                <button
+                  type="button"
+                  onClick={() => removeExistingImage(imageUrl)}
+                  className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1 text-xs"
+                >
+                  ✕
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* New Image Upload */}
+        <div className="mb-4">
+          <label className="block mb-1">Upload New Images</label>
           <input
             type="file"
             multiple
-            onChange={handleImageChange} // Handle image selection
+            onChange={handleImageChange}
             className="w-full border rounded px-2 py-1"
           />
         </div>
+
+        {/* Preview New Images */}
+        <div className="mb-4 flex flex-wrap gap-2">
+          {newImages.map((image, index) => (
+            <div key={index} className="relative">
+              <img
+                src={URL.createObjectURL(image)}
+                alt="New"
+                className="w-24 h-24 object-cover rounded border"
+              />
+              <button
+                type="button"
+                onClick={() => removeNewImage(index)}
+                className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1 text-xs"
+              >
+                ✕
+              </button>
+            </div>
+          ))}
+        </div>
+
         <button type="submit" className="bg-green-500 text-white px-4 py-2 rounded w-full">
           Update
         </button>

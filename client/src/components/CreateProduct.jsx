@@ -5,7 +5,7 @@ const CreateProduct = () => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [tags, setTags] = useState("");
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState([]); // Store multiple images
 
   const handleCreate = async (e) => {
     e.preventDefault();
@@ -13,15 +13,24 @@ const CreateProduct = () => {
     formData.append("title", title);
     formData.append("description", description);
     formData.append("tags", tags);
-    Array.from(images).forEach((image) => formData.append("carImage", image)); // Handle multiple images
+    
+    images.forEach((image) => formData.append("carImage", image)); // Append all selected images
 
     try {
-      await api.post("/cars/car-register", formData); // Use the `api` instance
+      await api.post("/cars/car-register", formData); // Use API instance
       alert("Car created successfully!");
     } catch (error) {
       console.error("Failed to create car", error.response?.data || error.message);
       alert("Failed to create product. Please try again.");
     }
+  };
+
+  const handleImageChange = (e) => {
+    setImages((prevImages) => [...prevImages, ...Array.from(e.target.files)]); // Append new images
+  };
+
+  const removeImage = (index) => {
+    setImages(images.filter((_, i) => i !== index)); // Remove selected image
   };
 
   return (
@@ -58,10 +67,31 @@ const CreateProduct = () => {
         <input
           type="file"
           multiple
-          onChange={(e) => setImages(e.target.files)}
+          onChange={handleImageChange}
           className="w-full border rounded"
         />
       </div>
+
+      {/* Display selected images */}
+      <div className="mb-4 flex flex-wrap gap-2">
+        {images.map((image, index) => (
+          <div key={index} className="relative">
+            <img
+              src={URL.createObjectURL(image)}
+              alt="Selected"
+              className="w-24 h-24 object-cover rounded border"
+            />
+            <button
+              type="button"
+              onClick={() => removeImage(index)}
+              className="absolute top-0 right-0 bg-red-500 text-white rounded-full p-1 text-xs"
+            >
+              ✕
+            </button>
+          </div>
+        ))}
+      </div>
+
       <button
         type="submit"
         className="bg-blue-500 text-white px-4 py-2 rounded w-full"
