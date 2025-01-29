@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import api from "../utils/api.js"; // Import the API instance
 import { AuthContext } from "../context/AuthContext";
 import Header from "../components/Header"; // ✅ Import Header
+import Cookies from "js-cookie";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -13,7 +14,9 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      await api.post("/users/login", { email, password }); // Using the API instance
+      let result = await api.post("/users/login", { email, password }); // Using the API instance
+      const token = result.data.data.accessToken;
+      Cookies.set("accessToken", token, { expires: 7, secure: true });
       setIsLoggedIn(true); // Update login state
       navigate("/products"); // Redirect to product list
     } catch (error) {
