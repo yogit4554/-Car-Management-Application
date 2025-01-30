@@ -18,12 +18,25 @@ const Header = () => {
     }
   };
 
+  const handleDocumentation = () => {
+    // Open the Postman documentation in a new tab
+    window.open('https://documenter.getpostman.com/view/36309775/2sAYX2LiZh', '_blank');
+  };
+
   return (
     <header className="bg-gradient-to-r from-gray-500 to-gray-600 text-white p-4 flex justify-between items-center shadow-lg">
       <h1 className="text-2xl font-extrabold tracking-wide">
         <Link to="/">Car Management</Link>
       </h1>
       <nav className="flex space-x-4">
+        {/* API Documentation Button */}
+        <button
+          onClick={handleDocumentation}
+          className="px-5 py-2 text-lg font-medium bg-white text-gray-800 rounded-md hover:bg-gray-300 transition duration-300"
+        >
+          API Documentation
+        </button>
+
         {!isLoggedIn ? (
           <>
             <Link
